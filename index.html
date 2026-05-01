@@ -282,71 +282,6 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* File upload */
-    .file-upload {
-      position: relative;
-    }
-    .file-upload input[type="file"] {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      cursor: pointer;
-      top: 0; left: 0;
-    }
-    .file-drop {
-      border: 2px dashed #cbd5e1;
-      border-radius: 10px;
-      padding: 24px;
-      text-align: center;
-      background: #f8faff;
-      transition: all 0.2s;
-      cursor: pointer;
-    }
-    .file-drop.dragover {
-      border-color: #4f8ef7;
-      background: #eff5ff;
-    }
-    .file-drop .file-icon { font-size: 28px; margin-bottom: 6px; }
-    .file-drop .file-label { font-size: 14px; color: #555; }
-    .file-drop .file-sub { font-size: 11px; color: #aaa; margin-top: 4px; }
-    .file-selected {
-      display: none;
-      align-items: center;
-      gap: 10px;
-      background: #f0fdf4;
-      border: 1.5px solid #86efac;
-      border-radius: 10px;
-      padding: 12px 14px;
-      margin-top: 8px;
-    }
-    .file-selected .file-name { font-size: 13px; color: #15803d; font-weight: 600; flex: 1; }
-    .file-selected .file-size { font-size: 11px; color: #888; }
-    .file-remove {
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-      color: #aaa;
-      padding: 0;
-      line-height: 1;
-    }
-    .file-remove:hover { color: #f43f5e; }
-    .progress-bar-wrap {
-      display: none;
-      margin-top: 10px;
-      background: #e2e8f0;
-      border-radius: 6px;
-      height: 6px;
-      overflow: hidden;
-    }
-    .progress-bar {
-      height: 100%;
-      background: linear-gradient(90deg, #4f8ef7, #22c55e);
-      width: 0%;
-      transition: width 0.3s;
-    }
-
     @media (max-width: 480px) {
       .header h1 { font-size: 19px; }
     }
@@ -476,33 +411,7 @@
         </div>
       </div>
 
-      <!-- Section 4: 첨부파일 -->
-      <div class="card">
-        <div class="card-title">📎 소비내역 파일 첨부 <span style="font-size:12px;font-weight:400;color:#aaa;">선택</span></div>
-        <div class="field">
-          <label>홈택스 소비내역 PDF</label>
-          <div class="file-upload">
-            <div class="file-drop" id="fileDrop">
-              <input type="file" name="attachment" accept=".pdf" id="fileInput" />
-              <div class="file-icon">📄</div>
-              <div class="file-label">클릭하거나 파일을 드래그해서 올려주세요</div>
-              <div class="file-sub">PDF 형식 · 최대 20MB · 카드내역, 현금영수증 내역 등</div>
-            </div>
-          </div>
-          <div class="file-selected" id="fileSelected">
-            <span>📄</span>
-            <span class="file-name" id="fileName"></span>
-            <span class="file-size" id="fileSize"></span>
-            <button type="button" class="file-remove" id="fileRemove">✕</button>
-          </div>
-          <div class="progress-bar-wrap" id="progressWrap">
-            <div class="progress-bar" id="progressBar"></div>
-          </div>
-          <div class="error-msg" id="file-error">파일 크기는 20MB 이하여야 합니다.</div>
-        </div>
-      </div>
-
-      <!-- Section 5: 추가사항 -->
+      <!-- Section 4: 추가사항 -->
       <div class="card">
         <div class="card-title">💬 추가 문의사항 <span style="font-size:12px;font-weight:400;color:#aaa;">선택</span></div>
         <div class="field">
@@ -556,63 +465,6 @@
       else if (v.length <= 7) this.value = v.slice(0, 3) + '-' + v.slice(3);
       else this.value = v.slice(0, 3) + '-' + v.slice(3, 7) + '-' + v.slice(7, 11);
     });
-
-    // 파일 업로드 처리
-    const fileInput = document.getElementById('fileInput');
-    const fileDrop = document.getElementById('fileDrop');
-    const fileSelected = document.getElementById('fileSelected');
-    const fileRemove = document.getElementById('fileRemove');
-    const MAX_SIZE = 20 * 1024 * 1024;
-
-    function showFile(file) {
-      if (file.size > MAX_SIZE) {
-        document.getElementById('file-error').style.display = 'block';
-        fileInput.value = '';
-        return;
-      }
-      document.getElementById('file-error').style.display = 'none';
-      document.getElementById('fileName').textContent = file.name;
-      document.getElementById('fileSize').textContent = (file.size / 1024 / 1024).toFixed(1) + 'MB';
-      fileSelected.style.display = 'flex';
-      fileDrop.style.display = 'none';
-    }
-
-    fileInput.addEventListener('change', () => {
-      if (fileInput.files[0]) showFile(fileInput.files[0]);
-    });
-
-    fileDrop.addEventListener('dragover', (e) => { e.preventDefault(); fileDrop.classList.add('dragover'); });
-    fileDrop.addEventListener('dragleave', () => fileDrop.classList.remove('dragover'));
-    fileDrop.addEventListener('drop', (e) => {
-      e.preventDefault();
-      fileDrop.classList.remove('dragover');
-      const file = e.dataTransfer.files[0];
-      if (file && file.type === 'application/pdf') {
-        const dt = new DataTransfer();
-        dt.items.add(file);
-        fileInput.files = dt.files;
-        showFile(file);
-      }
-    });
-
-    fileRemove.addEventListener('click', () => {
-      fileInput.value = '';
-      fileSelected.style.display = 'none';
-      fileDrop.style.display = 'block';
-    });
-
-    function readFileAsBase64(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve({
-          name: file.name,
-          type: file.type,
-          data: reader.result.split(',')[1],
-        });
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    }
 
     // 스텝 업데이트
     function setStep(n) {
@@ -679,17 +531,6 @@
       submitBtn.innerHTML = '<span class="spinner"></span> 접수 중...';
       setStep(2);
 
-      // 파일 읽기
-      let fileData = null;
-      const file = fileInput.files[0];
-      if (file) {
-        submitBtn.innerHTML = '<span class="spinner"></span> 파일 업로드 중...';
-        document.getElementById('progressWrap').style.display = 'block';
-        document.getElementById('progressBar').style.width = '60%';
-        fileData = await readFileAsBase64(file);
-        document.getElementById('progressBar').style.width = '100%';
-      }
-
       const data = {
         timestamp: new Date().toLocaleString('ko-KR'),
         name: form.name.value.trim(),
@@ -701,10 +542,7 @@
         bank: form.bank.value,
         account: form.account.value.trim(),
         memo: form.memo.value.trim(),
-        file: fileData,
       };
-
-      submitBtn.innerHTML = '<span class="spinner"></span> 제출 중...';
 
       try {
         await fetch(SCRIPT_URL, {
