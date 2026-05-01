@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>종합소득세 신고대행 접수</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+      background: #f5f7fa;
+      color: #1a1a2e;
+      min-height: 100vh;
+      padding: 32px 16px 60px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .header .badge {
+      display: inline-block;
+      background: #4f8ef7;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+    .header h1 {
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+    .header p {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    /* Steps */
+    .steps {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+      gap: 0;
+    }
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .step-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      color: #aaa;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .step.active .step-circle {
+      background: #4f8ef7;
+      color: #fff;
+    }
+    .step.done .step-circle {
+      background: #22c55e;
+      color: #fff;
+    }
+    .step-label {
+      font-size: 10px;
+      color: #aaa;
+      white-space: nowrap;
+    }
+    .step.active .step-label { color: #4f8ef7; font-weight: 600; }
+    .step.done .step-label { color: #22c55e; }
+    .step-line {
+      flex: 1;
+      height: 2px;
+      background: #e2e8f0;
+      max-width: 48px;
+      margin: 0 4px;
+      margin-bottom: 18px;
+    }
+    .step-line.done { background: #22c55e; }
+
+    /* Card */
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Form fields */
+    .field { margin-bottom: 16px; }
+    .field:last-child { margin-bottom: 0; }
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #333;
+    }
+    .field label .req {
+      color: #f43f5e;
+      margin-left: 2px;
+    }
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: inherit;
+      color: #1a1a2e;
+      transition: border-color 0.2s;
+      background: #fafbfc;
+      outline: none;
+    }
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: #4f8ef7;
+      background: #fff;
+    }
+    .field input.error,
+    .field select.error,
+    .field textarea.error {
+      border-color: #f43f5e;
+    }
+    .field textarea { resize: vertical; min-height: 90px; }
+    .field .hint {
+      font-size: 11px;
+      color: #888;
+      margin-top: 5px;
+    }
+    .field .error-msg {
+      font-size: 11px;
+      color: #f43f5e;
+      margin-top: 4px;
+      display: none;
+    }
+
+    /* Radio group */
+    .radio-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 2px;
+    }
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      font-weight: 400;
+      cursor: pointer;
+      padding: 7px 14px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 20px;
+      transition: all 0.15s;
+      margin-bottom: 0;
+      color: #555;
+      background: #fafbfc;
+    }
+    .radio-group input[type="radio"] { display: none; }
+    .radio-group input[type="radio"]:checked + span {
+      color: #4f8ef7;
+      font-weight: 700;
+    }
+    .radio-group label:has(input:checked) {
+      border-color: #4f8ef7;
+      background: #eff5ff;
+      color: #4f8ef7;
+    }
+
+    /* Notice box */
+    .notice {
+      background: #fffbe6;
+      border: 1.5px solid #ffe58f;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 12px;
+      color: #7c5e00;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    /* Consent */
+    .consent {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #f8faff;
+      border: 1.5px solid #dce7ff;
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 20px;
+      cursor: pointer;
+    }
+    .consent input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #4f8ef7;
+      margin-top: 1px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .consent-text { font-size: 13px; line-height: 1.6; color: #444; }
+    .consent-text strong { color: #1a1a2e; }
+
+    /* Submit button */
+    .btn-submit {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #4f8ef7, #3b6fd4);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+      box-shadow: 0 4px 14px rgba(79,142,247,0.35);
+    }
+    .btn-submit:hover { opacity: 0.92; }
+    .btn-submit:active { transform: scale(0.99); }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Success screen */
+    .success {
+      display: none;
+      text-align: center;
+      padding: 48px 24px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .success .icon { font-size: 56px; margin-bottom: 16px; }
+    .success h2 { font-size: 20px; font-weight: 800; margin-bottom: 10px; }
+    .success p { font-size: 14px; color: #666; line-height: 1.7; }
+
+    /* Loading spinner */
+    .spinner {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 480px) {
+      .header h1 { font-size: 19px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="badge">📋 2025년 귀속</div>
+      <h1>종합소득세 신고대행 접수 🧾</h1>
+      <p>접수 후 <strong>24시간 이내</strong> 예상세액을 안내해 드립니다.<br/>궁금하신 점은 언제든지 문의해 주세요 😊</p>
+    </div>
+
+    <!-- Steps -->
+    <div class="steps">
+      <div class="step active" id="step1">
+        <div class="step-circle">1</div>
+        <div class="step-label">기본정보</div>
+      </div>
+      <div class="step-line" id="line1"></div>
+      <div class="step" id="step2">
+        <div class="step-circle">2</div>
+        <div class="step-label">홈택스정보</div>
+      </div>
+      <div class="step-line" id="line2"></div>
+      <div class="step" id="step3">
+        <div class="step-circle">3</div>
+        <div class="step-label">환급계좌</div>
+      </div>
+      <div class="step-line" id="line3"></div>
+      <div class="step" id="step4">
+        <div class="step-circle">4</div>
+        <div class="step-label">제출완료</div>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <form id="surveyForm" novalidate>
+
+      <!-- Section 1: 기본정보 -->
+      <div class="card">
+        <div class="card-title">👤 기본정보</div>
+
+        <div class="field">
+          <label>성명 <span class="req">*</span></label>
+          <input type="text" name="name" placeholder="홍길동" />
+          <div class="error-msg">성명을 입력해 주세요.</div>
+        </div>
+
+        <div class="field">
+          <label>연락처 <span class="req">*</span></label>
+          <input type="tel" name="phone" placeholder="010-0000-0000" />
+          <div class="error-msg">연락처를 입력해 주세요.</div>
+        </div>
+
+        <div class="field">
+          <label>유입경로 <span class="req">*</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="source" value="검색" /><span>🔍 검색</span></label>
+            <label><input type="radio" name="source" value="스레드" /><span>🧵 스레드</span></label>
+            <label><input type="radio" name="source" value="기존고객" /><span>⭐ 기존고객</span></label>
+            <label><input type="radio" name="source" value="지인소개" /><span>🤝 지인소개</span></label>
+            <label><input type="radio" name="source" value="기타" /><span>💬 기타</span></label>
+          </div>
+          <div class="error-msg" id="source-error">유입경로를 선택해 주세요.</div>
+        </div>
+      </div>
+
+      <!-- Section 2: 홈택스 접속정보 -->
+      <div class="card">
+        <div class="card-title">🔐 홈택스 접속정보</div>
+
+        <div class="notice">
+          ⚠️ <strong>개인 홈택스 계정</strong>을 입력해 주세요.<br/>
+          입력하신 비밀번호는 신고 완료 후 즉시 폐기되며, 그 외 목적으로 절대 사용하지 않습니다.
+        </div>
+
+        <div class="field">
+          <label>주민등록번호 <span class="req">*</span></label>
+          <input type="text" name="residentId" placeholder="000000-0000000" maxlength="14" />
+          <div class="hint">⚠️ 보안 연결로 전송됩니다.</div>
+          <div class="error-msg">주민등록번호를 입력해 주세요.</div>
+        </div>
+
+        <div class="field">
+          <label>홈택스 아이디 <span class="req">*</span></label>
+          <input type="text" name="hometaxId" placeholder="홈택스 로그인 아이디" autocomplete="off" />
+          <div class="error-msg">홈택스 아이디를 입력해 주세요.</div>
+        </div>
+
+        <div class="field">
+          <label>홈택스 비밀번호 <span class="req">*</span></label>
+          <input type="password" name="hometaxPw" placeholder="홈택스 로그인 비밀번호" autocomplete="new-password" />
+          <div class="error-msg">홈택스 비밀번호를 입력해 주세요.</div>
+        </div>
+      </div>
+
+      <!-- Section 3: 환급계좌 -->
+      <div class="card">
+        <div class="card-title">🏦 환급계좌 <span style="font-size:12px;font-weight:400;color:#aaa;">선택</span></div>
+
+        <div class="field">
+          <label>은행명</label>
+          <select name="bank">
+            <option value="">은행을 선택하세요</option>
+            <option>국민은행</option>
+            <option>신한은행</option>
+            <option>우리은행</option>
+            <option>하나은행</option>
+            <option>농협은행</option>
+            <option>기업은행</option>
+            <option>카카오뱅크</option>
+            <option>토스뱅크</option>
+            <option>케이뱅크</option>
+            <option>SC제일은행</option>
+            <option>씨티은행</option>
+            <option>기타</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>계좌번호</label>
+          <input type="text" name="account" placeholder="숫자만 입력 (예: 1234567890123)" />
+          <div class="hint">환급금 수령 시 사용됩니다.</div>
+        </div>
+      </div>
+
+      <!-- Section 4: 추가사항 -->
+      <div class="card">
+        <div class="card-title">💬 추가 문의사항 <span style="font-size:12px;font-weight:400;color:#aaa;">선택</span></div>
+        <div class="field">
+          <textarea name="memo" placeholder="궁금하신 점이나 특이사항을 자유롭게 입력해 주세요."></textarea>
+        </div>
+      </div>
+
+      <!-- Consent -->
+      <label class="consent">
+        <input type="checkbox" id="consent" />
+        <div class="consent-text">
+          <strong>개인정보 수집 및 이용에 동의합니다.</strong><br/>
+          수집된 정보는 세무신고 대행 목적으로만 사용되며, 신고 완료 후 안전하게 파기됩니다.
+        </div>
+      </label>
+
+      <button type="submit" class="btn-submit" id="submitBtn">
+        접수하기 🚀
+      </button>
+
+    </form>
+
+    <!-- Success -->
+    <div class="success" id="successBox">
+      <div class="icon">🎉</div>
+      <h2>접수가 완료되었습니다!</h2>
+      <p>입력하신 연락처로 <strong>24시간 이내</strong> 연락드리겠습니다.<br/>
+      이용해 주셔서 감사합니다 😊</p>
+    </div>
+
+  </div>
+
+  <script>
+    // ✅ Google Apps Script 배포 URL을 여기에 입력하세요
+    const SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL';
+
+    const form = document.getElementById('surveyForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // 주민등록번호 자동 하이픈
+    document.querySelector('[name="residentId"]').addEventListener('input', function () {
+      let v = this.value.replace(/\D/g, '');
+      if (v.length > 6) v = v.slice(0, 6) + '-' + v.slice(6, 13);
+      this.value = v;
+    });
+
+    // 연락처 자동 하이픈
+    document.querySelector('[name="phone"]').addEventListener('input', function () {
+      let v = this.value.replace(/\D/g, '');
+      if (v.length <= 3) this.value = v;
+      else if (v.length <= 7) this.value = v.slice(0, 3) + '-' + v.slice(3);
+      else this.value = v.slice(0, 3) + '-' + v.slice(3, 7) + '-' + v.slice(7, 11);
+    });
+
+    // 스텝 업데이트
+    function setStep(n) {
+      for (let i = 1; i <= 4; i++) {
+        const el = document.getElementById('step' + i);
+        el.className = 'step' + (i < n ? ' done' : i === n ? ' active' : '');
+        if (i < 4) {
+          const line = document.getElementById('line' + i);
+          if (line) line.className = 'step-line' + (i < n ? ' done' : '');
+        }
+      }
+    }
+
+    // 폼 유효성 검사
+    function validate() {
+      let ok = true;
+
+      const fields = [
+        { name: 'name', msg: '성명을 입력해 주세요.' },
+        { name: 'phone', msg: '연락처를 입력해 주세요.' },
+        { name: 'residentId', msg: '주민등록번호를 입력해 주세요.' },
+        { name: 'hometaxId', msg: '홈택스 아이디를 입력해 주세요.' },
+        { name: 'hometaxPw', msg: '홈택스 비밀번호를 입력해 주세요.' },
+      ];
+
+      fields.forEach(({ name }) => {
+        const el = form.querySelector(`[name="${name}"]`);
+        const errEl = el.parentElement.querySelector('.error-msg');
+        if (!el.value.trim()) {
+          el.classList.add('error');
+          if (errEl) errEl.style.display = 'block';
+          ok = false;
+        } else {
+          el.classList.remove('error');
+          if (errEl) errEl.style.display = 'none';
+        }
+      });
+
+      // 유입경로 검사
+      const sourceChecked = form.querySelector('[name="source"]:checked');
+      const sourceErr = document.getElementById('source-error');
+      if (!sourceChecked) {
+        sourceErr.style.display = 'block';
+        ok = false;
+      } else {
+        sourceErr.style.display = 'none';
+      }
+
+      // 동의 체크
+      if (!document.getElementById('consent').checked) {
+        alert('개인정보 수집 및 이용에 동의해 주세요.');
+        ok = false;
+      }
+
+      return ok;
+    }
+
+    // 폼 제출
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      if (!validate()) return;
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner"></span> 접수 중...';
+      setStep(2);
+
+      const data = {
+        timestamp: new Date().toLocaleString('ko-KR'),
+        name: form.name.value.trim(),
+        phone: form.phone.value.trim(),
+        source: (form.querySelector('[name="source"]:checked') || {}).value || '',
+        residentId: form.residentId.value.trim(),
+        hometaxId: form.hometaxId.value.trim(),
+        hometaxPw: form.hometaxPw.value,
+        bank: form.bank.value,
+        account: form.account.value.trim(),
+        memo: form.memo.value.trim(),
+      };
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        setStep(4);
+        form.style.display = 'none';
+        document.getElementById('successBox').style.display = 'block';
+      } catch (err) {
+        alert('제출 중 오류가 발생했습니다. 다시 시도해 주세요.');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '접수하기 🚀';
+        setStep(1);
+      }
+    });
+  </script>
+</body>
+</html>
