@@ -479,27 +479,30 @@
         </div>
 
         <div class="field">
-          <label>신용카드 사용금액</label>
+          <label>신용카드 사용금액 <span class="req">*</span></label>
           <div class="amount-wrap">
             <input type="text" name="creditCard" placeholder="0" inputmode="numeric" />
             <span class="amount-unit">원</span>
           </div>
+          <div class="error-msg">신용카드 사용금액을 입력해 주세요.</div>
         </div>
 
         <div class="field">
-          <label>직불카드 / 체크카드 사용금액</label>
+          <label>직불카드 / 체크카드 사용금액 <span class="req">*</span></label>
           <div class="amount-wrap">
             <input type="text" name="debitCard" placeholder="0" inputmode="numeric" />
             <span class="amount-unit">원</span>
           </div>
+          <div class="error-msg">직불카드/체크카드 사용금액을 입력해 주세요.</div>
         </div>
 
         <div class="field">
-          <label>현금영수증 사용금액</label>
+          <label>현금영수증 사용금액 <span class="req">*</span></label>
           <div class="amount-wrap">
             <input type="text" name="cashReceipt" placeholder="0" inputmode="numeric" />
             <span class="amount-unit">원</span>
           </div>
+          <div class="error-msg">현금영수증 사용금액을 입력해 주세요.</div>
         </div>
 
         <a class="guide-link" href="https://blog.naver.com/willowtax/224274828602" target="_blank" rel="noopener noreferrer">
@@ -661,6 +664,9 @@
         { name: 'residentId', msg: '주민등록번호를 입력해 주세요.' },
         { name: 'hometaxId', msg: '홈택스 아이디를 입력해 주세요.' },
         { name: 'hometaxPw', msg: '홈택스 비밀번호를 입력해 주세요.' },
+        { name: 'creditCard', msg: '신용카드 사용금액을 입력해 주세요.' },
+        { name: 'debitCard', msg: '직불카드/체크카드 사용금액을 입력해 주세요.' },
+        { name: 'cashReceipt', msg: '현금영수증 사용금액을 입력해 주세요.' },
       ];
 
       fields.forEach(({ name }) => {
