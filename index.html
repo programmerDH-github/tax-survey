@@ -287,6 +287,43 @@
       background: none;
     }
 
+    /* Amount input */
+    .amount-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .amount-wrap input {
+      padding-right: 36px;
+      text-align: right;
+    }
+    .amount-unit {
+      position: absolute;
+      right: 14px;
+      font-size: 13px;
+      color: #888;
+      pointer-events: none;
+    }
+
+    /* Guide link */
+    .guide-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: #eef7f1;
+      border: 1.5px solid #c5e0cf;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #2d7a52;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .guide-link:hover { background: #dff0e7; }
+    .guide-arrow { margin-left: auto; font-size: 15px; }
+
     /* Submit button */
     .btn-submit {
       width: 100%;
@@ -433,7 +470,47 @@
         </div>
       </div>
 
-      <!-- Section 3: 환급계좌 -->
+      <!-- Section 3: 소비내역 -->
+      <div class="card">
+        <div class="card-title">💳 연간 소비내역 <span style="font-size:12px;font-weight:400;color:#aaa;">선택</span></div>
+
+        <div class="notice">
+          홈택스에서 조회한 <strong>1월 1일 ~ 12월 31일</strong> 기준 연간 사용금액을 입력해 주세요.<br/>
+          모르시는 경우 비워두시면 저희가 직접 조회해 드립니다.
+        </div>
+
+        <div class="field">
+          <label>신용카드 사용금액</label>
+          <div class="amount-wrap">
+            <input type="text" name="creditCard" placeholder="0" inputmode="numeric" />
+            <span class="amount-unit">원</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>직불카드 / 체크카드 사용금액</label>
+          <div class="amount-wrap">
+            <input type="text" name="debitCard" placeholder="0" inputmode="numeric" />
+            <span class="amount-unit">원</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>현금영수증 사용금액</label>
+          <div class="amount-wrap">
+            <input type="text" name="cashReceipt" placeholder="0" inputmode="numeric" />
+            <span class="amount-unit">원</span>
+          </div>
+        </div>
+
+        <a class="guide-link" href="https://blog.naver.com/willowtax/224274828602" target="_blank" rel="noopener noreferrer">
+          <span>📖</span>
+          <span>홈택스에서 소비내역 조회하는 방법 보러가기</span>
+          <span class="guide-arrow">→</span>
+        </a>
+      </div>
+
+      <!-- Section 4: 환급계좌 -->
       <div class="card">
         <div class="card-title">🏦 환급계좌 <span style="font-size:12px;font-weight:400;color:#aaa;">선택</span></div>
 
@@ -555,6 +632,14 @@
       else this.value = v.slice(0, 3) + '-' + v.slice(3, 7) + '-' + v.slice(7, 11);
     });
 
+    // 금액 자동 콤마
+    ['creditCard', 'debitCard', 'cashReceipt'].forEach(name => {
+      document.querySelector(`[name="${name}"]`).addEventListener('input', function () {
+        const raw = this.value.replace(/[^0-9]/g, '');
+        this.value = raw ? Number(raw).toLocaleString('ko-KR') : '';
+      });
+    });
+
     // 스텝 업데이트
     function setStep(n) {
       for (let i = 1; i <= 4; i++) {
@@ -628,6 +713,9 @@
         residentId: form.residentId.value.trim(),
         hometaxId: form.hometaxId.value.trim(),
         hometaxPw: form.hometaxPw.value,
+        creditCard: form.creditCard.value || '',
+        debitCard: form.debitCard.value || '',
+        cashReceipt: form.cashReceipt.value || '',
         bank: form.bank.value,
         account: form.account.value.trim(),
         memo: form.memo.value.trim(),
