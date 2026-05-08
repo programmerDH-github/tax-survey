@@ -9,7 +9,7 @@
 //   5. 액세스 권한: "모든 사용자" 로 설정 후 배포
 //   6. 배포 URL을 index.html 의 SCRIPT_URL 에 붙여넣기
 
-const SHEET_NAME = 'Sheet1';
+const SHEET_NAME = '2025년 귀속';
 
 const COLUMNS = [
   '제출시각',
