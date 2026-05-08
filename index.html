@@ -657,6 +657,7 @@
     // 폼 유효성 검사
     function validate() {
       let ok = true;
+      let firstErrorEl = null;
 
       const fields = [
         { name: 'name', msg: '성명을 입력해 주세요.' },
@@ -672,6 +673,7 @@
         if (!el.value.trim()) {
           el.classList.add('error');
           if (errEl) errEl.style.display = 'block';
+          if (!firstErrorEl) firstErrorEl = el;
           ok = false;
         } else {
           el.classList.remove('error');
@@ -684,6 +686,7 @@
       const sourceErr = document.getElementById('source-error');
       if (!sourceChecked) {
         sourceErr.style.display = 'block';
+        if (!firstErrorEl) firstErrorEl = sourceErr;
         ok = false;
       } else {
         sourceErr.style.display = 'none';
@@ -691,8 +694,12 @@
 
       // 동의 체크
       if (!document.getElementById('consent').checked) {
-        alert('개인정보 수집 및 이용에 동의해 주세요.');
+        if (!firstErrorEl) firstErrorEl = document.getElementById('consent');
         ok = false;
+      }
+
+      if (firstErrorEl) {
+        firstErrorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
 
       return ok;
