@@ -79,6 +79,25 @@ function getOrCreateSheet() {
   return sheet;
 }
 
+// 조건부 서식 설정 — 최초 1회만 실행
+function setupConditionalFormatting() {
+  const sheet = getOrCreateSheet();
+  const range = sheet.getRange('A2:K1000');
+
+  const rule = SpreadsheetApp.newConditionalFormatRule()
+    .whenFormulaSatisfied('=$J2=TRUE')
+    .setBackground('#c6efce')
+    .setFontColor('#276221')
+    .setRanges([range])
+    .build();
+
+  const rules = sheet.getConditionalFormatRules();
+  rules.push(rule);
+  sheet.setConditionalFormatRules(rules);
+
+  Logger.log('조건부 서식 설정 완료');
+}
+
 // 디버깅용 — 스프레드시트 연결 확인
 function debugSheet() {
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
