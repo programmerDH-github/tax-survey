@@ -476,42 +476,19 @@
     <!-- Form -->
     <form id="surveyForm" novalidate>
 
-      <!-- Section 1: 기본정보 -->
+      <!-- Section 1: 신청인 정보 -->
       <div class="card">
-        <div class="card-title">👤 기본정보</div>
-
-        <div class="field">
-          <label>성명 <span class="req">*</span></label>
-          <input type="text" name="name" placeholder="홍길동" />
-          <div class="error-msg">성명을 입력해 주세요.</div>
-        </div>
-
-        <div class="field">
-          <label>연락처 <span class="req">*</span></label>
-          <input type="tel" name="phone" placeholder="010-0000-0000" />
-          <div class="error-msg">연락처를 입력해 주세요.</div>
-        </div>
-
-        <div class="field">
-          <label>유입경로 <span class="req">*</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="source" value="검색" /><span>🔍 검색</span></label>
-            <label><input type="radio" name="source" value="스레드" /><span>🧵 스레드</span></label>
-            <label><input type="radio" name="source" value="기존고객" /><span>⭐ 기존고객</span></label>
-            <label><input type="radio" name="source" value="지인소개" /><span>🤝 지인소개</span></label>
-            <label><input type="radio" name="source" value="기타" /><span>💬 기타</span></label>
-          </div>
-          <div class="error-msg" id="source-error">유입경로를 선택해 주세요.</div>
-        </div>
-      </div>
-
-      <!-- Section 2: 홈택스 접속정보 -->
-      <div class="card">
-        <div class="card-title">🔐 홈택스 접속정보</div>
+        <div class="card-title">👤 신청인 정보</div>
 
         <div class="notice">
           ⚠️ <strong>개인 홈택스 계정</strong>을 입력해 주세요.<br/>
           입력하신 비밀번호는 신고 완료 후 즉시 폐기되며, 그 외 목적으로 절대 사용하지 않습니다.
+        </div>
+
+        <div class="field">
+          <label>대표자 <span class="req">*</span></label>
+          <input type="text" name="name" placeholder="홍길동" />
+          <div class="error-msg">대표자명을 입력해 주세요.</div>
         </div>
 
         <div class="field">
@@ -534,49 +511,30 @@
         </div>
       </div>
 
-      <!-- Section 3: 소비내역 -->
+      <!-- Section 2: 연락처 -->
       <div class="card">
-        <div class="card-title">💳 연간 소비내역</div>
+        <div class="card-title">📞 연락처 정보</div>
 
-        <div class="notice">
-          홈택스에서 조회한 <strong>1월 1일 ~ 12월 31일</strong> 기준 연간 사용금액을 입력해 주세요.
+        <div class="field">
+          <label>연락처 <span class="req">*</span></label>
+          <input type="tel" name="phone" placeholder="010-0000-0000" />
+          <div class="error-msg">연락처를 입력해 주세요.</div>
         </div>
 
         <div class="field">
-          <label>신용카드 사용금액</label>
-          <div class="amount-wrap">
-            <input type="text" name="creditCard" placeholder="0" inputmode="numeric" />
-            <span class="amount-unit">원</span>
+          <label>유입경로 <span class="req">*</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="source" value="검색" /><span>🔍 검색</span></label>
+            <label><input type="radio" name="source" value="스레드" /><span>🧵 스레드</span></label>
+            <label><input type="radio" name="source" value="기존고객" /><span>⭐ 기존고객</span></label>
+            <label><input type="radio" name="source" value="지인소개" /><span>🤝 지인소개</span></label>
+            <label><input type="radio" name="source" value="기타" /><span>💬 기타</span></label>
           </div>
-          <div class="error-msg">신용카드 사용금액을 입력해 주세요.</div>
+          <div class="error-msg" id="source-error">유입경로를 선택해 주세요.</div>
         </div>
-
-        <div class="field">
-          <label>직불카드 / 체크카드 사용금액</label>
-          <div class="amount-wrap">
-            <input type="text" name="debitCard" placeholder="0" inputmode="numeric" />
-            <span class="amount-unit">원</span>
-          </div>
-          <div class="error-msg">직불카드/체크카드 사용금액을 입력해 주세요.</div>
-        </div>
-
-        <div class="field">
-          <label>현금영수증 사용금액</label>
-          <div class="amount-wrap">
-            <input type="text" name="cashReceipt" placeholder="0" inputmode="numeric" />
-            <span class="amount-unit">원</span>
-          </div>
-          <div class="error-msg">현금영수증 사용금액을 입력해 주세요.</div>
-        </div>
-
-        <a class="guide-link" href="https://blog.naver.com/willowtax/224274828602" target="_blank" rel="noopener noreferrer">
-          <span>📖</span>
-          <span>홈택스에서 소비내역 조회하는 방법 보러가기</span>
-          <span class="guide-arrow">→</span>
-        </a>
       </div>
 
-      <!-- Section 4: 환급계좌 -->
+      <!-- Section 3: 환급계좌 -->
       <div class="card">
         <div class="card-title">🏦 환급계좌 <span style="font-size:12px;font-weight:400;color:#aaa;">선택</span></div>
 
@@ -699,14 +657,6 @@
       else this.value = v.slice(0, 3) + '-' + v.slice(3, 7) + '-' + v.slice(7, 11);
     });
 
-    // 금액 자동 콤마
-    ['creditCard', 'debitCard', 'cashReceipt'].forEach(name => {
-      document.querySelector(`[name="${name}"]`).addEventListener('input', function () {
-        const raw = this.value.replace(/[^0-9]/g, '');
-        this.value = raw ? Number(raw).toLocaleString('ko-KR') : '';
-      });
-    });
-
     // 스텝 업데이트
     function setStep(n) {
       for (let i = 1; i <= 4; i++) {
@@ -725,7 +675,7 @@
       let firstErrorEl = null;
 
       const fields = [
-        { name: 'name', msg: '성명을 입력해 주세요.' },
+        { name: 'name', msg: '대표자명을 입력해 주세요.' },
         { name: 'phone', msg: '연락처를 입력해 주세요.' },
         { name: 'residentId', msg: '주민등록번호를 입력해 주세요.' },
         { name: 'hometaxId', msg: '홈택스 아이디를 입력해 주세요.' },
@@ -782,14 +732,11 @@
       const data = {
         timestamp: new Date().toLocaleString('ko-KR'),
         name: form.name.value.trim(),
-        phone: form.phone.value.trim(),
-        source: (form.querySelector('[name="source"]:checked') || {}).value || '',
         residentId: form.residentId.value.trim(),
         hometaxId: form.hometaxId.value.trim(),
         hometaxPw: form.hometaxPw.value,
-        creditCard: form.creditCard.value || '',
-        debitCard: form.debitCard.value || '',
-        cashReceipt: form.cashReceipt.value || '',
+        phone: form.phone.value.trim(),
+        source: (form.querySelector('[name="source"]:checked') || {}).value || '',
         bank: form.bank.value,
         account: form.account.value.trim(),
         memo: form.memo.value.trim(),
