@@ -476,38 +476,15 @@
     <!-- Form -->
     <form id="surveyForm" novalidate>
 
-      <!-- Section 1: 신청인 정보 -->
+      <!-- Section 1: 기본 정보 -->
       <div class="card">
-        <div class="card-title">👤 신청인 정보</div>
+        <div class="card-title">👤 기본 정보</div>
 
         <div class="field">
           <label>대표자 <span class="req">*</span></label>
           <input type="text" name="name" placeholder="홍길동" />
           <div class="error-msg">대표자명을 입력해 주세요.</div>
         </div>
-
-        <div class="field">
-          <label>주민등록번호 <span class="req">*</span></label>
-          <input type="text" name="residentId" placeholder="000000-0000000" maxlength="14" />
-          <div class="error-msg">주민등록번호를 입력해 주세요.</div>
-        </div>
-
-        <div class="field">
-          <label>홈택스 아이디 <span class="req">*</span></label>
-          <input type="text" name="hometaxId" placeholder="홈택스 로그인 아이디" autocomplete="off" />
-          <div class="error-msg">홈택스 아이디를 입력해 주세요.</div>
-        </div>
-
-        <div class="field">
-          <label>홈택스 비밀번호 <span class="req">*</span></label>
-          <input type="password" name="hometaxPw" placeholder="홈택스 로그인 비밀번호" autocomplete="new-password" />
-          <div class="error-msg">홈택스 비밀번호를 입력해 주세요.</div>
-        </div>
-      </div>
-
-      <!-- Section 2: 연락처 -->
-      <div class="card">
-        <div class="card-title">📞 연락처 정보</div>
 
         <div class="field">
           <label>연락처 <span class="req">*</span></label>
@@ -525,6 +502,29 @@
             <label><input type="radio" name="source" value="기타" /><span>💬 기타</span></label>
           </div>
           <div class="error-msg" id="source-error">유입경로를 선택해 주세요.</div>
+        </div>
+      </div>
+
+      <!-- Section 2: 홈택스 접속 정보 -->
+      <div class="card">
+        <div class="card-title">🔐 홈택스 접속 정보</div>
+
+        <div class="field">
+          <label>주민등록번호 <span class="req">*</span></label>
+          <input type="text" name="residentId" placeholder="000000-0000000" maxlength="14" />
+          <div class="error-msg">주민등록번호를 입력해 주세요.</div>
+        </div>
+
+        <div class="field">
+          <label>홈택스 아이디 <span class="req">*</span></label>
+          <input type="text" name="hometaxId" placeholder="홈택스 로그인 아이디" autocomplete="off" />
+          <div class="error-msg">홈택스 아이디를 입력해 주세요.</div>
+        </div>
+
+        <div class="field">
+          <label>홈택스 비밀번호 <span class="req">*</span></label>
+          <input type="password" name="hometaxPw" placeholder="홈택스 로그인 비밀번호" autocomplete="new-password" />
+          <div class="error-msg">홈택스 비밀번호를 입력해 주세요.</div>
         </div>
       </div>
 
