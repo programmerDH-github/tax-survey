@@ -86,7 +86,7 @@ function setupConditionalFormatting() {
 
   const rule = SpreadsheetApp.newConditionalFormatRule()
     .whenFormulaSatisfied('=$J2=TRUE')
-    .setBackground('#c6efce')
+    .setBackground('#d9f7e2')
     .setFontColor('#276221')
     .setRanges([range])
     .build();
